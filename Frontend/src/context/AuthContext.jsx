@@ -1,5 +1,11 @@
-import { createContext, useContext, useEffect, useState, useCallback } from 'react';
-import api from '../api/client';
+import {
+  createContext,
+  useContext,
+  useEffect,
+  useState,
+  useCallback,
+} from "react";
+import api from "../api/client";
 
 const AuthContext = createContext({
   user: null,
@@ -16,7 +22,7 @@ function AuthProvider({ children }) {
   const fetchMe = useCallback(async () => {
     try {
       setLoading(true);
-  const res = await api.get('/api/auth/me');
+      const res = await api.get("/api/auth/me");
       setUser(res.data.user || null);
     } catch {
       setUser(null);
@@ -25,12 +31,14 @@ function AuthProvider({ children }) {
     }
   }, []);
 
-  useEffect(() => { fetchMe(); }, [fetchMe]);
+  useEffect(() => {
+    fetchMe();
+  }, [fetchMe]);
 
   const logout = useCallback(() => {
     // Simple logout: clear cookie by expiring it (needs backend endpoint ideally)
     // Fallback: overwrite cookie via client (works if same site) & clear state
-    document.cookie = 'token=; Max-Age=0; path=/;';
+    document.cookie = "token=; Max-Age=0; path=/;";
     setUser(null);
   }, []);
 
@@ -39,6 +47,8 @@ function AuthProvider({ children }) {
 }
 
 // eslint-disable-next-line
-export function useAuth() { return useContext(AuthContext); }
+export function useAuth() {
+  return useContext(AuthContext);
+}
 
 export default AuthProvider;
